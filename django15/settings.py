@@ -1,7 +1,7 @@
 # Django settings for django15 project.
 
 import os
-
+import dj_database_url
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 SITE_ROOT = os.path.dirname(PROJECT_ROOT)
 
@@ -13,15 +13,17 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+DATABASES = { 'default' : dj_database_url.config()}
 
-DATABASES = {
-    'default': { 
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'django_deploy',                     
-        'USER': 'root',
-        'PASSWORD': '',
-    }
-}
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# try to load local_settings.py if it exists
+try:
+  from local_settings import *
+except Exception as e:
+  pass
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
